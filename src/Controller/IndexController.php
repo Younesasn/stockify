@@ -13,4 +13,10 @@ class IndexController extends AbstractController
     {
         return $this->render('index/index.html.twig');
     }
+
+    #[Route('/dashboard', name: 'dashboard')]
+    public function dashboard(): Response
+    {
+        return $this->render('index/dashboard.html.twig');
+    }
 }
