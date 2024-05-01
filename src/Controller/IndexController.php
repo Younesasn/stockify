@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Extension;
 use App\Entity\Upload;
+use App\Entity\User;
 use App\Form\UploadType;
+use App\Form\UserType;
 use App\Repository\CategoryRepository;
 use App\Repository\ExtensionRepository;
 use App\Repository\UploadRepository;
@@ -13,15 +15,41 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class IndexController extends AbstractController
 {
+    public function __construct(private UserPasswordHasherInterface $hasher)
+    {}
+
     #[Route('/', name: 'index')]
     public function index(): Response
     {
         return $this->render('index/index.html.twig');
+    }
+
+    #[Route('/signup', name: 'signup')]
+    public function signUp(Request $request, EntityManagerInterface $em): Response
+    {
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Vous êtes bien inscrit ! Connectez-vous pour accéder à votre espace.');
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render('index/signup.html.twig', [
+            'form' => $form
+        ]);
     }
 
     #[Route('/dashboard', name: 'dashboard')]
