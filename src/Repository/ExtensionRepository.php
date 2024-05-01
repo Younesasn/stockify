@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Extension;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,13 +25,11 @@ class ExtensionRepository extends ServiceEntityRepository
     //    /**
     //     * @return Extension[] Returns an array of Extension objects
     //     */
-    //    public function findByExampleField($value): array
+    //    public function findByExtension(string $extension): array
     //    {
     //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
+    //            ->andWhere('e.value = :extension')
+    //            ->setParameter('extension', $extension)
     //            ->getQuery()
     //            ->getResult()
     //        ;

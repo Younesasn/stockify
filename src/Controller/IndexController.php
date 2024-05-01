@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Extension;
 use App\Entity\Upload;
 use App\Form\UploadType;
+use App\Repository\CategoryRepository;
+use App\Repository\ExtensionRepository;
+use App\Repository\UploadRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -21,49 +25,90 @@ class IndexController extends AbstractController
     }
 
     #[Route('/dashboard', name: 'dashboard')]
-    public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em): Response
+    public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository): Response
     {
+        $pictureCategory = $categoryRepository->findOneBy(['name' => 'Photos']);
+        $pictures = $uploadRepository->findAllUploadWithCategory('Photos');
+
+        $fileCategory = $categoryRepository->findOneBy(['name' => 'Fichiers']);
+        $files = $uploadRepository->findAllUploadWithCategory('Fichiers');
+
+        $videoCategory = $categoryRepository->findOneBy(['name' => 'Vidéos']);
+        $videos = $uploadRepository->findAllUploadWithCategory('Vidéos');
+
+        $audioCategory = $categoryRepository->findOneBy(['name' => 'Audios']);
+        $audios = $uploadRepository->findAllUploadWithCategory('Audios');
+
+        $uploads = $uploadRepository->findAll();
+
+        $extension = new Extension();
+
         $file = new Upload();
         $form = $this->createForm(UploadType::class, $file);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $brochureFile = $form->get('filename')->getData();
 
             if ($brochureFile) {
+                $extensionFile = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_EXTENSION);
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
 
-                // Move the file to the directory where brochures are stored
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $extensionFile;
+
                 try {
                     $brochureFile->move(
                         $this->getParameter('uploads_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    $this->addFlash('error', $e->getMessage());
                 }
 
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $file->setExtension(pathinfo($brochureFile->getClientOriginalName(), PATHINFO_EXTENSION));
+                $file->setExtension($extensionFile);
                 $file->setSize(filesize($this->getParameter('uploads_directory') . '/' . $newFilename));
                 $file->setOriginalFilename($brochureFile->getClientOriginalName());
                 $file->setFilename($newFilename);
+                $file->setDate(new \DateTime());
+
+                $searchExtension = $extensionRepository->findOneByValue($extensionFile);
+
+                if (empty($searchExtension)) {
+                    $extension->setValue($extensionFile);
+                    $em->persist($extension);
+                }
+
+                $file->setCategory($searchExtension->getCategory());
+                $em->persist($file);
+                $em->flush();
             }
 
-            $file->setDate(new \DateTime());
-            $em->persist($file);
-            $em->flush();
-
-            $this->addFlash('success', $file->getOriginalFilename() . ' a bien été enregistée dans ' . $file->getFolder());
-            return $this->redirectToRoute('dashboard');
+            $this->addFlash('success', $file->getOriginalFilename() . ' a bien été enregistée ! ' . $file->getFolder());
+            return $this->redirectToRoute('dashboard', []);
         }
+
         return $this->render('index/dashboard.html.twig', [
-            'form'=> $form
+            'form' => $form,
+            'uploads' => $uploads,
+            'files' => $files,
+            'fileCategory' => $fileCategory,
+            'pictures' => $pictures,
+            'pictureCategory' => $pictureCategory,
+            'videos' => $videos,
+            'videoCategory' => $videoCategory,
+            'audios' => $audios,
+            'audioCategory' => $audioCategory,
         ]);
+    }
+
+    #[Route(path: '/delete/{id}', name: 'delete')]
+    public function delete(Upload $upload, EntityManagerInterface $em): Response
+    {
+        unlink('uploads/' . $upload->getFilename());
+        $em->remove($upload);
+        $em->flush();
+        return $this->redirectToRoute('dashboard');
     }
 }

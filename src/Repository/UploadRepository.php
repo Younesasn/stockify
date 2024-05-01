@@ -21,20 +21,20 @@ class UploadRepository extends ServiceEntityRepository
         parent::__construct($registry, Upload::class);
     }
 
-    //    /**
-    //     * @return Upload[] Returns an array of Upload objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+       /**
+        * @return Upload[] Returns an array of Upload objects
+        */
+       public function findAllUploadWithCategory(string $value): array
+       {
+           return $this->createQueryBuilder('u')
+               ->innerJoin('u.category', 'c')
+               ->andWhere('c.name = :val')
+               ->setParameter('val', $value)
+               ->orderBy('u.id', 'DESC')
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 
     //    public function findOneBySomeField($value): ?Upload
     //    {

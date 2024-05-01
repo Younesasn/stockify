@@ -24,16 +24,16 @@ class UploadType extends AbstractType
             // ->add('date', null, [
             //     'widget' => 'single_text',
             // ])
-            ->add('folder', EntityType::class, [
-                'class' => Folder::class,
-                'choice_label' => 'name',
-            ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-            ])
+            // ->add('folder', EntityType::class, [
+            //     'class' => Folder::class,
+            //     'choice_label' => 'name',
+            // ])
+            // ->add('category', EntityType::class, [
+            //     'class' => Category::class,
+            //     'choice_label' => 'name',
+            // ])
             ->add('send', SubmitType::class, [
-                'label' => 'Envoyez', 
+                'label' => 'Importer', 
                 'attr' => ['class'=> 'bg-secondary'],
             ])
         ;
