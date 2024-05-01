@@ -7,6 +7,7 @@ use App\Entity\Extension;
 use App\Entity\Folder;
 use App\Entity\Subscription;
 use App\Entity\Upload;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -31,6 +32,7 @@ class AdminController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
         yield MenuItem::linkToCrud('Uploads', 'fa fa-home', Upload::class);
         yield MenuItem::linkToCrud('Category', 'fa fa-home', Category::class);
         yield MenuItem::linkToCrud('Folder', 'fa fa-home', Folder::class);
