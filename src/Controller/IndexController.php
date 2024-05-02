@@ -104,6 +104,7 @@ class IndexController extends AbstractController
                 $searchExtension = $extensionRepository->findOneByValue($extensionFile);
 
                 if (empty($searchExtension)) {
+                    // catégorie par défaut à implémenter
                     $extension->setValue($extensionFile);
                     $em->persist($extension);
                 }
