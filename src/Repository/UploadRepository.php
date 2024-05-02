@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Upload;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,13 +25,14 @@ class UploadRepository extends ServiceEntityRepository
        /**
         * @return Upload[] Returns an array of Upload objects
         */
-       public function findAllUploadWithCategory(string $value): array
+       public function findByUserWithCategory(User $user, string $category): array
        {
            return $this->createQueryBuilder('u')
                ->innerJoin('u.category', 'c')
-               ->andWhere('c.name = :val')
-               ->setParameter('val', $value)
-               ->orderBy('u.id', 'DESC')
+               ->andWhere('c.name = :category')
+               ->andWhere('u.user = :user')
+               ->setParameter('category', $category)
+               ->setParameter('user', $user)
                ->getQuery()
                ->getResult()
            ;

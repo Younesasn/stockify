@@ -27,7 +27,11 @@ class IndexController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-        return $this->render('index/index.html.twig');
+        // dd($this->getUser());
+
+        return $this->render('index/index.html.twig', [
+            'user' => $this->getUser(),
+        ]);
     }
 
     #[Route('/signup', name: 'signup')]
@@ -55,17 +59,18 @@ class IndexController extends AbstractController
     #[Route('/dashboard', name: 'dashboard')]
     public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository): Response
     {
+
         $pictureCategory = $categoryRepository->findOneBy(['name' => 'Photos']);
-        $pictures = $uploadRepository->findAllUploadWithCategory('Photos');
+        $pictures = $uploadRepository->findByUserWithCategory($this->getUser(), 'Photos');
 
         $fileCategory = $categoryRepository->findOneBy(['name' => 'Fichiers']);
-        $files = $uploadRepository->findAllUploadWithCategory('Fichiers');
+        $files = $uploadRepository->findByUserWithCategory($this->getUser(), 'Fichiers');
 
         $videoCategory = $categoryRepository->findOneBy(['name' => 'Vidéos']);
-        $videos = $uploadRepository->findAllUploadWithCategory('Vidéos');
+        $videos = $uploadRepository->findByUserWithCategory($this->getUser(), 'Vidéos');
 
         $audioCategory = $categoryRepository->findOneBy(['name' => 'Audios']);
-        $audios = $uploadRepository->findAllUploadWithCategory('Audios');
+        $audios = $uploadRepository->findByUserWithCategory($this->getUser(), 'Audios');
 
         $uploads = $uploadRepository->findAll();
 
@@ -95,6 +100,7 @@ class IndexController extends AbstractController
                     $this->addFlash('error', $e->getMessage());
                 }
 
+                $file->setUser($this->getUser());
                 $file->setExtension($extensionFile);
                 $file->setSize(filesize($this->getParameter('uploads_directory') . '/' . $newFilename));
                 $file->setOriginalFilename($brochureFile->getClientOriginalName());
@@ -119,6 +125,7 @@ class IndexController extends AbstractController
         }
 
         return $this->render('index/dashboard.html.twig', [
+            'user' => $this->getUser(),
             'form' => $form,
             'uploads' => $uploads,
             'files' => $files,
