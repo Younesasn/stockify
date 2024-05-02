@@ -35,6 +35,10 @@ class Upload
     #[ORM\ManyToOne(inversedBy: 'uploads')]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'uploads')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +124,18 @@ class Upload
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

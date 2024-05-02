@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,6 +42,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Subscription $subscription = null;
+
+    /**
+     * @var Collection<int, Upload>
+     */
+    #[ORM\OneToMany(targetEntity: Upload::class, mappedBy: 'user')]
+    private Collection $uploads;
+
+    public function __construct()
+    {
+        $this->uploads = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -148,6 +161,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSubscription(?Subscription $subscription): static
     {
         $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Upload>
+     */
+    public function getUploads(): Collection
+    {
+        return $this->uploads;
+    }
+
+    public function addUpload(Upload $upload): static
+    {
+        if (!$this->uploads->contains($upload)) {
+            $this->uploads->add($upload);
+            $upload->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUpload(Upload $upload): static
+    {
+        if ($this->uploads->removeElement($upload)) {
+            // set the owning side to null (unless already changed)
+            if ($upload->getUser() === $this) {
+                $upload->setUser(null);
+            }
+        }
 
         return $this;
     }
