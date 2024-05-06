@@ -22,5 +22,6 @@
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
-/mdl.html
 ###< symfony/asset-mapper ###
+
+/mdl.html

@@ -156,7 +156,7 @@ class IndexController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Upload $upload, EntityManagerInterface $em): Response
     {
-        unlink('uploads/' . $upload->getFilename());
+        unlink('uploads/' . $this->getUser()->getDirectoryName() . '/' . $upload->getFilename());
         $em->remove($upload);
         $em->flush();
         return $this->redirectToRoute('dashboard');
