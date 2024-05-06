@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Upload::class, mappedBy: 'user')]
     private Collection $uploads;
 
+    #[ORM\Column(length: 255)]
+    private ?string $directoryName = null;
+
     public function __construct()
     {
         $this->uploads = new ArrayCollection();
@@ -191,6 +194,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $upload->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDirectoryName(): ?string
+    {
+        return $this->directoryName;
+    }
+
+    public function setDirectoryName(?string $directoryName): static
+    {
+        $this->directoryName = $directoryName;
 
         return $this;
     }
