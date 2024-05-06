@@ -10,7 +10,7 @@
 
 		<div class="collapse navbar-collapse col-lg-4 justify-content-end" id="navbarNav">
 			<ul class="navbar-nav">
-				{# {% if user is not defined %} #}
+				{% if user is not defined or user is null %}
 					<li class="nav-item">
 						<a href="{{ path('login') }}" class="nav-link active">
 							Se connecter
@@ -21,25 +21,24 @@
 							S'inscrire
 						</a>
 					</li>
-				{# {% endif %}
-				{% if user is defined %} #}
+				{% elseif user is defined and user is not null %}
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Hi
-							{# {{ user.firstName }} #}
+							{{ user.firstName }}
 						</a>
 						<ul class="dropdown-menu">
 							<li>
 								<a class="dropdown-item" href="#">Profil</a>
 							</li>
 							<li><hr class="dropdown-divider"></li>
-							{# {% if user.roles.0 == 'ROLE_ADMIN' %} #}
+							{% if user.roles.0 == 'ROLE_ADMIN' %}
 								<li>
 									<a href="{{ path('admin') }}" class="dropdown-item">
 										Admin
 									</a>
 								</li>
-							{# {% endif %} #}
+							{% endif %}
 							<li><hr class="dropdown-divider"></li>
 							<li>
 								<a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a>
@@ -51,7 +50,7 @@
 							Dashboard
 						</a>
 					</li>
-				{# {% endif %} #}
+				{% endif %}
 			</ul>
 		</div>
 	</div>
