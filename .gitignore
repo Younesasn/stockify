@@ -25,3 +25,4 @@
 ###< symfony/asset-mapper ###
 
 /mdl.html
+/public/uploads/*

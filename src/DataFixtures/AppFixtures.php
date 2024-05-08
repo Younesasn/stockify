@@ -73,7 +73,8 @@ class AppFixtures extends Fixture
             'php',
             'sql',
             'xml',
-            'yaml'
+            'yaml',
+            'pages'
         ],
         'Audios' => [
             'flac',

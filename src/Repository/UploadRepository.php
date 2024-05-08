@@ -22,21 +22,29 @@ class UploadRepository extends ServiceEntityRepository
         parent::__construct($registry, Upload::class);
     }
 
-       /**
-        * @return Upload[] Returns an array of Upload objects
-        */
-       public function findByUserWithCategory(User $user, string $category): array
-       {
-           return $this->createQueryBuilder('u')
-               ->innerJoin('u.category', 'c')
-               ->andWhere('c.name = :category')
-               ->andWhere('u.user = :user')
-               ->setParameter('category', $category)
-               ->setParameter('user', $user)
-               ->getQuery()
-               ->getResult()
-           ;
-       }
+    /**
+     * @return Upload[] Returns an array of Upload objects
+     */
+    public function findByUserWithCategory(User $user, string $category): array
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.category', 'c')
+            ->andWhere('c.name = :category')
+            ->andWhere('u.user = :user')
+            ->setParameter('category', $category)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findSizeAllFiles(User $user): int|null
+    {
+        return $this->getEntityManager()->createQuery('SELECT SUM(u.size) FROM ' . Upload::class . ' u WHERE u.user = :user')
+                    ->setParameter('user', $user)
+                    ->getSingleScalarResult()
+                    ;
+    }
 
     //    public function findOneBySomeField($value): ?Upload
     //    {

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Extension;
-use App\Entity\Folder;
 use App\Entity\Upload;
 use App\Entity\User;
 use App\Form\UploadType;
@@ -11,6 +10,7 @@ use App\Form\UserType;
 use App\Repository\CategoryRepository;
 use App\Repository\ExtensionRepository;
 use App\Repository\UploadRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -30,8 +30,6 @@ class IndexController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-        // dd($this->getUser());
-
         return $this->render('index/index.html.twig', [
             'user' => $this->getUser(),
         ]);
@@ -63,7 +61,7 @@ class IndexController extends AbstractController
     }
 
     #[Route('/dashboard', name: 'dashboard')]
-    public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository): Response
+    public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
     {
         // Récupérations de la Category & des Upload du User
         $pictureCategory = $categoryRepository->findOneBy(['name' => 'Photos']);
@@ -78,11 +76,13 @@ class IndexController extends AbstractController
         $audioCategory = $categoryRepository->findOneBy(['name' => 'Audios']);
         $audios = $uploadRepository->findByUserWithCategory($this->getUser(), 'Audios');
 
+        $size = $uploadRepository->findSizeAllFiles($this->getUser());
+        $userStorage = $this->getUser()->getSubscription()->getStorage();
+        $pourcent = $size * 100 / $userStorage;
+
         // Déclaration des Entity
         $extension = new Extension();
         $file = new Upload();
-        $folder = new Folder();
-        $filesystem = new Filesystem();
         $form = $this->createForm(UploadType::class, $file);
 
         $form->handleRequest($request);
@@ -99,18 +99,11 @@ class IndexController extends AbstractController
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $extensionFile;
 
                 try {
-
                     $dirname = $this->getUser()->getDirectoryName();
                     $brochureFile->move(
                         $this->getParameter('uploads_directory') . '/' . $dirname,
                         $newFilename
                     );
-
-                    $folder->setName($dirname);
-                    $folder->setDate(new \DateTime());
-                    $file->setFolder($folder);
-                    $em->persist($folder);
-
                 } catch (FileException $e) {
                     $this->addFlash('error', $e->getMessage());
                 }
@@ -126,6 +119,7 @@ class IndexController extends AbstractController
 
                 if (empty($searchExtension)) {
                     // catégorie par défaut à implémenter
+                    // $extension->setCategory();
                     $extension->setValue($extensionFile);
                     $em->persist($extension);
                 }
@@ -150,6 +144,8 @@ class IndexController extends AbstractController
             'videoCategory' => $videoCategory,
             'audios' => $audios,
             'audioCategory' => $audioCategory,
+            'size' => $size,
+            'pourcent' => $pourcent,
         ]);
     }
 
