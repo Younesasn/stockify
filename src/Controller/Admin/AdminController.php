@@ -32,12 +32,12 @@ class AdminController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
-        yield MenuItem::linkToCrud('Uploads', 'fa fa-home', Upload::class);
-        yield MenuItem::linkToCrud('Category', 'fa fa-home', Category::class);
-        yield MenuItem::linkToCrud('Folder', 'fa fa-home', Folder::class);
-        yield MenuItem::linkToCrud('Subscription', 'fa fa-home', Subscription::class);
-        yield MenuItem::linkToCrud('Extension', 'fa fa-home', Extension::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('Users', 'fa fa-users', User::class);
+        yield MenuItem::linkToCrud('Uploads', 'fa fa-file', Upload::class);
+        yield MenuItem::linkToCrud('Category', 'fa fa-list', Category::class);
+        yield MenuItem::linkToCrud('Folder', 'fa-solid fa-folder', Folder::class);
+        yield MenuItem::linkToCrud('Subscription', 'fa fa-dollar-sign', Subscription::class);
+        yield MenuItem::linkToCrud('Extension', 'fa fa-ellipsis', Extension::class);
+        yield MenuItem::linkToRoute('Dashboard', 'fa fa-home', 'dashboard');
     }
 }

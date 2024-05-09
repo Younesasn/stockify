@@ -24,9 +24,9 @@ class UserCrudController extends AbstractCrudController
             EmailField::new('email'),
             TextField::new('firstName'),
             TextField::new('lastName'),
+            TextField::new('directoryName')->hideWhenCreating()->hideWhenUpdating(),
             ArrayField::new('roles'),
             AssociationField::new('subscription'),
-            // AssociationField::new('upload'),
         ];
     }
 }

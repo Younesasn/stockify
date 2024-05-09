@@ -10,7 +10,7 @@
 
 		<div class="collapse navbar-collapse col-lg-4 justify-content-end" id="navbarNav">
 			<ul class="navbar-nav">
-				{% if user is not defined or user is null %}
+				{% if app.user is not defined or app.user is null %}
 					<li class="nav-item">
 						<a href="{{ path('login') }}" class="nav-link active">
 							Se connecter
@@ -21,18 +21,18 @@
 							S'inscrire
 						</a>
 					</li>
-				{% elseif user is defined and user is not null %}
+				{% elseif app.user is defined and app.user is not null %}
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Hi
-							{{ user.firstName }}
+							{{ app.user.firstName }}
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a class="dropdown-item" href="#">Profil</a>
+								<a class="dropdown-item" href="{{ path('user_edit', {id : app.user.id} ) }}">Profil</a>
 							</li>
-							<li><hr class="dropdown-divider"></li>
-							{% if user.roles.0 == 'ROLE_ADMIN' %}
+							{% if app.user.roles.0 == 'ROLE_ADMIN' %}
+								<li><hr class="dropdown-divider"></li>
 								<li>
 									<a href="{{ path('admin') }}" class="dropdown-item">
 										Admin

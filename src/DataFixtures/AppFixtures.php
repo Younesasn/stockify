@@ -90,11 +90,11 @@ class AppFixtures extends Fixture
     public const SUBSCRIPTIONS = [
         [
             'name' => 'Free',
-            'storage' => 1000000000
+            'storage' => 100000000
         ],
         [
             'name' => 'Premium',
-            'storage' => 2000000000
+            'storage' => 200000000
         ],
     ];
 

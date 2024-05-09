@@ -30,9 +30,7 @@ class IndexController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-        return $this->render('index/index.html.twig', [
-            'user' => $this->getUser(),
-        ]);
+        return $this->render('index/index.html.twig');
     }
 
     #[Route('/signup', name: 'signup')]
@@ -48,9 +46,9 @@ class IndexController extends AbstractController
             $user->setRoles(['ROLE_USER']);
             $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
             $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
-            $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());
             $em->persist($user);
             $em->flush();
+            $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());
             $this->addFlash('success', 'Vous êtes bien inscrit !');
             return $this->redirectToRoute('dashboard');
         }
@@ -63,26 +61,30 @@ class IndexController extends AbstractController
     #[Route('/dashboard', name: 'dashboard')]
     public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
     {
-        // Récupérations de la Category & des Upload du User
+        $user = $this->getUser();
+
+        // Récupérations des Category & des Upload par Category du User
         $pictureCategory = $categoryRepository->findOneBy(['name' => 'Photos']);
-        $pictures = $uploadRepository->findByUserWithCategory($this->getUser(), 'Photos');
+        $pictures = $uploadRepository->findByUserWithCategory($user, 'Photos');
 
         $fileCategory = $categoryRepository->findOneBy(['name' => 'Fichiers']);
-        $files = $uploadRepository->findByUserWithCategory($this->getUser(), 'Fichiers');
+        $files = $uploadRepository->findByUserWithCategory($user, 'Fichiers');
 
         $videoCategory = $categoryRepository->findOneBy(['name' => 'Vidéos']);
-        $videos = $uploadRepository->findByUserWithCategory($this->getUser(), 'Vidéos');
+        $videos = $uploadRepository->findByUserWithCategory($user, 'Vidéos');
 
         $audioCategory = $categoryRepository->findOneBy(['name' => 'Audios']);
-        $audios = $uploadRepository->findByUserWithCategory($this->getUser(), 'Audios');
+        $audios = $uploadRepository->findByUserWithCategory($user, 'Audios');
 
-        $size = $uploadRepository->findSizeAllFiles($this->getUser());
-        $userStorage = $this->getUser()->getSubscription()->getStorage();
+        // Addition de toutes les tailles d'Upload du User + produit en croix
+        $size = $uploadRepository->findSizeAllFiles($user);
+        $userStorage = $user->getSubscription()->getStorage();
+        $midStorage = $userStorage / 2;
         $pourcent = $size * 100 / $userStorage;
 
         // Déclaration des Entity
-        $extension = new Extension();
         $file = new Upload();
+        $extension = new Extension();
         $form = $this->createForm(UploadType::class, $file);
 
         $form->handleRequest($request);
@@ -99,7 +101,7 @@ class IndexController extends AbstractController
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $extensionFile;
 
                 try {
-                    $dirname = $this->getUser()->getDirectoryName();
+                    $dirname = $user->getDirectoryName();
                     $brochureFile->move(
                         $this->getParameter('uploads_directory') . '/' . $dirname,
                         $newFilename
@@ -108,7 +110,7 @@ class IndexController extends AbstractController
                     $this->addFlash('error', $e->getMessage());
                 }
 
-                $file->setUser($this->getUser());
+                $file->setUser($user);
                 $file->setExtension($extensionFile);
                 $file->setSize(filesize('uploads/' . $dirname . '/' . $newFilename));
                 $file->setOriginalFilename($brochureFile->getClientOriginalName());
@@ -134,7 +136,6 @@ class IndexController extends AbstractController
         }
 
         return $this->render('index/dashboard.html.twig', [
-            'user' => $this->getUser(),
             'form' => $form,
             'files' => $files,
             'fileCategory' => $fileCategory,
@@ -145,7 +146,9 @@ class IndexController extends AbstractController
             'audios' => $audios,
             'audioCategory' => $audioCategory,
             'size' => $size,
+            'storage' => $userStorage,
             'pourcent' => $pourcent,
+            'midStorage' => $midStorage
         ]);
     }
 
@@ -155,6 +158,7 @@ class IndexController extends AbstractController
         unlink('uploads/' . $this->getUser()->getDirectoryName() . '/' . $upload->getFilename());
         $em->remove($upload);
         $em->flush();
+        $this->addFlash('success', $upload->getOriginalFilename() . ' a bien été supprimé !');
         return $this->redirectToRoute('dashboard');
     }
 }
