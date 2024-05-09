@@ -8,13 +8,13 @@
 	<section class="">
 		<div class="container-fluid">
 			<div class="mt-4 row text-center">
-				<div class="col-lg-3 sticky-lg-top">
+				<div class="col-lg-2 sticky-lg-top">
 					{{ size < storage ? form(form) : "Vous avez dépassé la limite de stockage de votre abonnement" }}
 					<div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 						<div class="progress-bar bg-{{ size > storage ? 'danger' : size > midStorage ? 'warning' : 'success' }}" style="width: {{ pourcent }}%"></div>
 					</div>
 				</div>
-				<div class="col-lg-9">
+				<div class="col-lg-10">
 					<div class="mb-4">
 						<div class="row">
 							{# Copie #}
@@ -47,7 +47,7 @@
 								</h2>
 
 								{% for picture in pictures %}
-									<div class="card col-lg-6 ms-4 mb-4" style="width: 19rem;">
+									<div class="card col-lg-6 me-3 mb-3" style="width: 19rem;">
 										<div class="card-body">
 											<h5 class="card-title">{{ picture.originalFilename }}</h5>
 											<a href="uploads/{{ picture.filename }}" class="" download="{{ picture.originalFilename }}">

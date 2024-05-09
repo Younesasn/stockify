@@ -19,7 +19,7 @@ class UserType extends AbstractType
         ->add('firstName')
         ->add('lastName')
         ->add('email')
-        ->add('password', PasswordType::class)
+        ->add('password')
         ->add('subscription', EntityType::class, [
             'class' => Subscription::class,
             'choice_label' => 'name',
