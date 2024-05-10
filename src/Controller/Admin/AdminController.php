@@ -35,7 +35,7 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fa fa-users', User::class);
         yield MenuItem::linkToCrud('Uploads', 'fa fa-file', Upload::class);
         yield MenuItem::linkToCrud('Category', 'fa fa-list', Category::class);
-        yield MenuItem::linkToCrud('Folder', 'fa-solid fa-folder', Folder::class);
+        // yield MenuItem::linkToCrud('Folder', 'fa-solid fa-folder', Folder::class);
         yield MenuItem::linkToCrud('Subscription', 'fa fa-dollar-sign', Subscription::class);
         yield MenuItem::linkToCrud('Extension', 'fa fa-ellipsis', Extension::class);
         yield MenuItem::linkToRoute('Dashboard', 'fa fa-home', 'dashboard');

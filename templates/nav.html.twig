@@ -17,7 +17,7 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ path('signup') }}" class="nav-link active">
+						<a href="{{ path('app_user_new') }}" class="nav-link active">
 							S'inscrire
 						</a>
 					</li>
@@ -29,7 +29,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a class="dropdown-item" href="{{ path('user_edit', {id : app.user.id} ) }}">Profil</a>
+								<a class="dropdown-item" href="{{ path('app_user_show', {id : app.user.id} ) }}">Profil</a>
 							</li>
 							{% if app.user.roles.0 == 'ROLE_ADMIN' %}
 								<li><hr class="dropdown-divider"></li>

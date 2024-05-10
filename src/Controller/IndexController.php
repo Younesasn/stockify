@@ -17,45 +17,16 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class IndexController extends AbstractController
 {
-    public function __construct(private UserPasswordHasherInterface $hasher)
-    {
-    }
 
     #[Route('/', name: 'index')]
     public function index(): Response
     {
         return $this->render('index/index.html.twig');
-    }
-
-    #[Route('/signup', name: 'signup')]
-    public function signUp(Request $request, EntityManagerInterface $em): Response
-    {
-        $user = new User();
-        $filesystem = new Filesystem();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $user->setRoles(['ROLE_USER']);
-            $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
-            $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
-            $em->persist($user);
-            $em->flush();
-            $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());
-            $this->addFlash('success', 'Vous êtes bien inscrit !');
-            return $this->redirectToRoute('dashboard');
-        }
-
-        return $this->render('index/signup.html.twig', [
-            'form' => $form
-        ]);
     }
 
     #[Route('/dashboard', name: 'dashboard')]
@@ -155,7 +126,6 @@ class IndexController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Upload $upload, EntityManagerInterface $em): Response
     {
-        unlink('uploads/' . $this->getUser()->getDirectoryName() . '/' . $upload->getFilename());
         $em->remove($upload);
         $em->flush();
         $this->addFlash('success', $upload->getOriginalFilename() . ' a bien été supprimé !');

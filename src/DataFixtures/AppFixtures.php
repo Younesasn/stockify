@@ -97,10 +97,7 @@ class AppFixtures extends Fixture
             'storage' => 200000000
         ],
     ];
-
-    public function __construct(private UserPasswordHasherInterface $hasher)
-    {
-    }
+    
     public function load(ObjectManager $manager): void
     {
         $filesystem = new Filesystem();
@@ -117,7 +114,6 @@ class AppFixtures extends Fixture
         $user->setFirstName($faker->firstName);
         $user->setLastName($faker->lastName);
         $user->setEmail('user@user.com');
-        $user->setPassword($this->hasher->hashPassword($user, 'user'));
         $user->setRoles(['ROLE_USER']);
         $user->setSubscription($sub);
         $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
@@ -128,7 +124,6 @@ class AppFixtures extends Fixture
         $admin->setFirstName($faker->firstName);
         $admin->setLastName($faker->lastName);
         $admin->setEmail('admin@admin.com');
-        $admin->setPassword($this->hasher->hashPassword($admin, 'admin'));
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setSubscription($sub);
         $admin->setDirectoryName($admin->getFirstName() . '_' . $admin->getLastName() . '_' . uniqid());
