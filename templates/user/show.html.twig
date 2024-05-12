@@ -1,44 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Profil
+{% endblock %}
 
 {% block main %}
-    <h1>Profil</h1>
 
-    <table class="table">
-        <tbody>
-            {# <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr> #}
-            <tr>
-                <th>Prénom</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            {# <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr> #}
-            {# <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr> #}
-            {# <tr>
-                <th>DirectoryName</th>
-                <td>{{ user.directoryName }}</td>
-            </tr> #}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier mon profil</a>
+	<section class="">
+		<div class="container">
+			<div class="row text-center">
+				<h2 class="my-4">Profil</h2>
+				<div class="col-lg-12">
+					<div class="mb-4">
+						<table class="table">
+							<tbody>
+								<tr>
+									<th class="col-6 border">Prénom</th>
+									<td class="col-6 border">{{ user.firstName }}</td>
+								</tr>
+								<tr>
+									<th class="col-6 border">Nom</th>
+									<td class="col-6 border">{{ user.lastName }}</td>
+								</tr>
+								<tr>
+									<th class="col-6 border">Email</th>
+									<td class="col-6 border">{{ user.email }}</td>
+								</tr>
+							</tbody>
+						</table>
+						{{ include('user/_delete_form.html.twig') }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    {{ include('user/_delete_form.html.twig') }}
+	{# <a href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier mon profil</a> #}
+
 {% endblock %}

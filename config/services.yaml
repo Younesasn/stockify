@@ -30,3 +30,7 @@ services:
                 event: kernel.response,
                 method: "addHeader",
             }
+    
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%uploads_directory%'

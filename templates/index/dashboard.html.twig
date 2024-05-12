@@ -25,7 +25,7 @@
 								</h2>
 
 								{% for file in files %}
-									<div class="card col-lg-6 ms-4 mb-4" style="width: 19rem;">
+									<div class="card col-lg-6 mx-3 mb-3" style="width: 19rem;">
 										<div class="card-body">
 											<h5 class="card-title">{{ file.originalFilename }}</h5>
 											<a href="uploads/{{ file.filename }}" class="card-link" download="{{ file.originalFilename }}">
@@ -47,7 +47,7 @@
 								</h2>
 
 								{% for picture in pictures %}
-									<div class="card col-lg-6 me-3 mb-3" style="width: 19rem;">
+									<div class="card col-lg-6 mx-3 mb-3" style="width: 19rem;">
 										<div class="card-body">
 											<h5 class="card-title">{{ picture.originalFilename }}</h5>
 											<a href="uploads/{{ picture.filename }}" class="" download="{{ picture.originalFilename }}">
@@ -68,7 +68,7 @@
 								</h2>
 
 								{% for video in videos %}
-									<div class="card col-lg-6 ms-4 mb-4" style="width: 19rem;">
+									<div class="card col-lg-6 mx-3 mb-3" style="width: 19rem;">
 										<div class="card-body">
 											<h5 class="card-title">{{ video.originalFilename }}</h5>
 											<a href="uploads/{{ video.filename }}" class="card-link" download="{{ video.originalFilename }}">
@@ -89,7 +89,7 @@
 								</h2>
 
 								{% for audio in audios %}
-									<div class="card col-lg-6 ms-4 mb-4" style="width: 19rem;">
+									<div class="card col-lg-6 mx-3 mb-3" style="width: 19rem;">
 										<div class="card-body">
 											<h5 class="card-title">{{ audio.originalFilename }}</h5>
 											<a href="uploads/{{ audio.filename }}" class="card-link" download="{{ audio.originalFilename }}">

@@ -2,23 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Extension;
 use App\Entity\Upload;
-use App\Entity\User;
 use App\Form\UploadType;
-use App\Form\UserType;
+use App\Entity\Extension;
+use App\Service\FileUploader;
+use App\Repository\UserRepository;
+use App\Repository\UploadRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ExtensionRepository;
-use App\Repository\UploadRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class IndexController extends AbstractController
 {
@@ -30,7 +27,7 @@ class IndexController extends AbstractController
     }
 
     #[Route('/dashboard', name: 'dashboard')]
-    public function dashboard(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
+    public function dashboard(FileUploader $fileUploader, Request $request, EntityManagerInterface $em, UploadRepository $uploadRepository, ExtensionRepository $extensionRepository, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
     {
         $user = $this->getUser();
 
@@ -65,21 +62,19 @@ class IndexController extends AbstractController
             $brochureFile = $form->get('filename')->getData();
 
             if ($brochureFile) {
-                $extensionFile = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_EXTENSION);
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $extensionFile;
 
                 try {
-                    $dirname = $user->getDirectoryName();
-                    $brochureFile->move(
-                        $this->getParameter('uploads_directory') . '/' . $dirname,
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('error', $e->getMessage());
+                    $data = $fileUploader->upload($user, $brochureFile);
+                } catch(FileException $e) {
+                    $this->addFlash('danger', $e->getMessage());
+                    return $this->redirectToRoute('dashboard', []);
                 }
+
+                [
+                    'newFilename' => $newFilename,
+                    'dirname' => $dirname,
+                    'extension' => $extensionFile
+                ] = $data;
 
                 $file->setUser($user);
                 $file->setExtension($extensionFile);
@@ -92,7 +87,8 @@ class IndexController extends AbstractController
 
                 if (empty($searchExtension)) {
                     // catégorie par défaut à implémenter
-                    // $extension->setCategory();
+                    $autres = $extensionRepository->findOneBy(['name' => 'Autres']);
+                    $extension->setCategory($autres);
                     $extension->setValue($extensionFile);
                     $em->persist($extension);
                 }
