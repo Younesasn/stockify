@@ -20,7 +20,7 @@ class ExtensionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideWhenCreating()->hideWhenUpdating(),
+            IdField::new('id')->hideOnForm(),
             TextField::new('value'),
             AssociationField::new('category'),
         ];

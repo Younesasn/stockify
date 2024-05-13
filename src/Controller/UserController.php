@@ -25,6 +25,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRoles(['ROLE_USER']);
             $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
+            $user->setPassword($user);
             $entityManager->persist($user);
             $entityManager->flush();
             $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());

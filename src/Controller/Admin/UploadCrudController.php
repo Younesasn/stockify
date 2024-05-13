@@ -24,13 +24,12 @@ class UploadCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideWhenCreating()->hideWhenUpdating(),
-            // TextField::new('filename'),
+            IdField::new('id')->hideOnForm(),
             ImageField::new('filename')->setBasePath('uploads/' . $this->getUser()->getDirectoryName())->setUploadDir('uploads/' . $this->getUser()->getDirectoryName()),
-            NumberField::new('size')->hideWhenCreating()->hideWhenUpdating(),
+            NumberField::new('size')->hideOnForm(),
             TextField::new('extension'),
             TextField::new('originalFilename'),
-            DateField::new('date')->hideWhenCreating()->hideWhenUpdating(),
+            DateField::new('date')->hideOnForm(),
             AssociationField::new('user')
         ];
     }

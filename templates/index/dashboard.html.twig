@@ -29,10 +29,10 @@
 										<div class="card-body">
 											<h5 class="card-title">{{ file.originalFilename }}</h5>
 											<a href="uploads/{{ file.filename }}" class="card-link" download="{{ file.originalFilename }}">
-												<i class="fa-solid fa-circle-arrow-down"></i>
+												<i class="fa-solid fa-download me-3"></i>
 											</a>
 											<a href="{{ path('delete', { id : file.id }) }}" class="">
-												<i class="fa-solid fa-xmark"></i>
+												<i class="fa-solid fa-xmark ms-3"></i>
 											</a>
 										</div>
 									</div>

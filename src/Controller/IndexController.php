@@ -11,11 +11,11 @@ use App\Repository\UploadRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ExtensionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class IndexController extends AbstractController
 {
@@ -84,11 +84,11 @@ class IndexController extends AbstractController
                 $file->setDate(new \DateTime());
 
                 $searchExtension = $extensionRepository->findOneByValue($extensionFile);
-
+                
+                // si l'extension n'existe pas en BDD
                 if (empty($searchExtension)) {
-                    // catégorie par défaut à implémenter
-                    $autres = $extensionRepository->findOneBy(['name' => 'Autres']);
-                    $extension->setCategory($autres);
+                    // catégorie par défaut : Autres
+                    $extension->setCategory($categoryRepository->findOneBy(['name' => 'Autres']));
                     $extension->setValue($extensionFile);
                     $em->persist($extension);
                 }

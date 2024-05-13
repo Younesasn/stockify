@@ -2,14 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Entity\Category;
 use App\Entity\Extension;
 use App\Entity\Subscription;
-use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -114,7 +113,7 @@ class AppFixtures extends Fixture
         $user->setFirstName($faker->firstName);
         $user->setLastName($faker->lastName);
         $user->setEmail('user@user.com');
-        $user->setRoles(['ROLE_USER']);
+        $user->setPassword('user');
         $user->setSubscription($sub);
         $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
         $filesystem->mkdir('public/uploads/' . $user->getDirectoryName());
@@ -124,6 +123,7 @@ class AppFixtures extends Fixture
         $admin->setFirstName($faker->firstName);
         $admin->setLastName($faker->lastName);
         $admin->setEmail('admin@admin.com');
+        $admin->setPassword('admin');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setSubscription($sub);
         $admin->setDirectoryName($admin->getFirstName() . '_' . $admin->getLastName() . '_' . uniqid());
