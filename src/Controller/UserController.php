@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,7 +24,6 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRoles(['ROLE_USER']);
             $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
-            $user->setPassword($user);
             $entityManager->persist($user);
             $entityManager->flush();
             $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());

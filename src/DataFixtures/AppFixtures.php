@@ -113,7 +113,6 @@ class AppFixtures extends Fixture
         $user->setFirstName($faker->firstName);
         $user->setLastName($faker->lastName);
         $user->setEmail('user@user.com');
-        $user->setPassword('user');
         $user->setSubscription($sub);
         $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
         $filesystem->mkdir('public/uploads/' . $user->getDirectoryName());
@@ -123,7 +122,6 @@ class AppFixtures extends Fixture
         $admin->setFirstName($faker->firstName);
         $admin->setLastName($faker->lastName);
         $admin->setEmail('admin@admin.com');
-        $admin->setPassword('admin');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setSubscription($sub);
         $admin->setDirectoryName($admin->getFirstName() . '_' . $admin->getLastName() . '_' . uniqid());

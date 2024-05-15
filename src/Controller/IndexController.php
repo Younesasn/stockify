@@ -102,6 +102,8 @@ class IndexController extends AbstractController
             return $this->redirectToRoute('dashboard', []);
         }
 
+        
+
         return $this->render('index/dashboard.html.twig', [
             'form' => $form,
             'files' => $files,
