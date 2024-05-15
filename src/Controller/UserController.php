@@ -5,28 +5,35 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Event\SubscriptionRegisteredEvent;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Filesystem $filesystem): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Filesystem $filesystem, EventDispatcherInterface $dispatcher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles([]);
             $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
             $entityManager->persist($user);
             $entityManager->flush();
             $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());
+
+            $dispatcher->dispatch(
+                new SubscriptionRegisteredEvent($user),
+                SubscriptionRegisteredEvent::NAME
+            );
 
             $this->addFlash('success', 'Vous êtes bien inscrit !');
             return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
