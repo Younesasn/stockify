@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UploadRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UploadRepository::class)]
 class Upload
@@ -12,18 +13,23 @@ class Upload
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('upload:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('upload:read')]
     private ?string $filename = null;
 
     #[ORM\Column]
+    #[Groups('upload:read')]
     private ?int $size = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('upload:read')]
     private ?string $extension = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('upload:read')]
     private ?string $originalFilename = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -33,6 +39,7 @@ class Upload
     private ?Folder $folder = null;
 
     #[ORM\ManyToOne(inversedBy: 'uploads')]
+    #[Groups('upload:read')]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'uploads')]

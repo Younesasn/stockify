@@ -37,9 +37,9 @@ class SubscriptionRegisteredSubscriber implements EventSubscriberInterface
             ->addEmbed(
                 (new DiscordEmbed())
                 ->color(2021216)
-                ->title('Nouvel utilisateur chez Stockify !')
+                ->title('Bienvenue chez Stockify ' . $user->getFirstName() . ' !')
                 ->thumbnail((new DiscordMediaEmbedObject())
-                ->url('https://images.app.goo.gl/AgcHTZ8QH9NHK2ur7'))
+                ->url('https://ld-web.github.io/hb-sf-pe7-course/img/logo.png'))
                 ->addField(
                     (new DiscordFieldEmbedObject())
                     ->name('Email')
@@ -61,7 +61,7 @@ class SubscriptionRegisteredSubscriber implements EventSubscriberInterface
                 ->footer(
                     (new DiscordFooterEmbedObject())
                     ->text('Stockify - ' . date('Y'))
-                    ->iconUrl('https://images.app.goo.gl/AgcHTZ8QH9NHK2ur7')
+                    ->iconUrl('https://ld-web.github.io/hb-sf-pe7-course/img/logo.png')
                 )
             )
         ;
