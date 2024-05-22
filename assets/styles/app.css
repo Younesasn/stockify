@@ -1,7 +1,13 @@
-.hero {
-  height: 500px;
+.h-screen {
+  height: 100vh;
 }
 
-.theme {
-  background-color: black;
+.w-screen {
+  width: 100vw;
+}
+
+.bg-img {
+  background-image: url('../images/bg.svg');
+  background-size: cover;
+  background-position: center;
 }
