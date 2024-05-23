@@ -31,7 +31,6 @@ Installer un server local SMTP pour pouvoir recevoir les mails envoyés par Symf
 
 ### Pour Windows
 
-> [!INFO]
 > Assurez-vous d'avoir installé [Docker](<https://docs.docker.com/desktop/install/windows-install/>) sur votre machine.
 
 Lancez cette commande sur votre terminal :
