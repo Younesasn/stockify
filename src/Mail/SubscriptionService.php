@@ -24,8 +24,7 @@ class SubscriptionService {
             ->from($this->adminEmail)
             ->to($user->getEmail())
             ->subject('Stockify - Inscription')
-            ->text('Votre inscription a bien été enregistrée')
-            ->html('<p>Votre adresse ' . $user->getEmail() . ' a bien été enregistrée. Merci pour votre confiance !</p>');
+            ->html('Votre inscription a bien été enregistrée. Merci pour votre confiance !');
 
         $this->mailer->send($email);
     }

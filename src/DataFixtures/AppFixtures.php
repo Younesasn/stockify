@@ -100,6 +100,8 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $filesystem = new Filesystem();
+        $filesystem->remove('public/uploads');
+
         $faker = \Faker\Factory::create();
 
         foreach (self::SUBSCRIPTIONS as $subscription) {

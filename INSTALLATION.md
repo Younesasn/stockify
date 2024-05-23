@@ -1,11 +1,11 @@
-# Configuration du projet
+# Configuration du projet ⚙️
 
 Installer le projet avec `Composer` :
 ```bash
 composer install
 ```
 
-## Doctrine
+## Doctrine 🪄
 
 Créer un fichier `.env.local` à la racine du projet & configurer votre `base de donnée` :
 ```ini
@@ -25,11 +25,11 @@ php bin/console doctrine:migrations:migrate
 
 Voici un [schéma représentatif](<assets/bdd.png>) de la base de donnée du projet.
 
-## Mailtrap
+## Mailtrap 📨
 
 Installer un server local SMTP pour pouvoir recevoir les mails envoyés par Symfony.
 
-### Pour Windows
+### Pour Windows 📠
 
 > Assurez-vous d'avoir installé [Docker](<https://docs.docker.com/desktop/install/windows-install/>) sur votre machine.
 
@@ -52,7 +52,7 @@ Ajoutez dans le fichier `.env.local` la configuration du `Mailer` :
 MAILER_DSN=smtp://127.0.0.1:1025
 ```
 
-### Pour Mac
+### Pour Mac 💻
 
 Mailtrap avec Docker n'est pas disponible pour les Mac ayant les puces récentes (M1, M2, M3...). Mailhog est une solution !
 
@@ -75,7 +75,7 @@ Ajoutez dans le fichier `.env.local` la configuration du `Mailer` :
 MAILER_DSN=smtp://127.0.0.1:1025
 ```
 
-## Notification Discord (Facultatif)
+## Notification Discord (Facultatif) 📳
 
 Commencez par [créer un webhook](<https://serveur-prive.net/actualites/comment-creer-un-webhook-discord>) sur un serveur `Discord`.
 
@@ -84,13 +84,13 @@ Insérez dans le fichier `.env.local` le lien en ajoutant son `Token` & son `Web
 DISCORD_DSN=discord://TOKEN@default?webhook_id=ID
 ```
 
-## Fixtures
+## Fixtures 🚧
 
 Enfin, chargez les fixtures dans la base de donnée :
 ```bash
 php bin/console doctrine:fixtures:load
 ```
 
-Enjoy !
+Enjoy ! 🍾
 
 Retournez au [README](<README.md>)

@@ -31,7 +31,6 @@ class SubscriptionRegisteredSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         $chatMessage = new ChatMessage('');
 
-        // Create Discord Embed
         $discordOptions = (new DiscordOptions())
             ->username('Stockify')
             ->addEmbed(
@@ -76,7 +75,7 @@ class SubscriptionRegisteredSubscriber implements EventSubscriberInterface
         return [
             SubscriptionRegisteredEvent::NAME => [
                 ['sendConfirmationEmail', 10],
-                ['sendDiscordNotification', 5]
+                // ['sendDiscordNotification', 5]
             ],
         ];
     }

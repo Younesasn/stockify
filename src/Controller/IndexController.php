@@ -101,9 +101,7 @@ class IndexController extends AbstractController
             $this->addFlash('success', $file->getOriginalFilename() . ' a bien été enregistée ! ');
             return $this->redirectToRoute('dashboard', []);
         }
-
         
-
         return $this->render('index/dashboard.html.twig', [
             'form' => $form,
             'files' => $files,
