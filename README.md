@@ -52,8 +52,8 @@ J'avais une légère problématique pour la modification d'informations dans `Pr
 
 ## Conclusion 🔚
 
-Après la réalisation d'un [projet `PHP`](<https://github.com/Younesasn/power>) sans framework, aborder Symfony est un pur régale 👨🏾‍🍳.
+Après la réalisation d'un [projet](<https://github.com/Younesasn/power>) `PHP` sans framework, aborder Symfony est un pur régal 👨🏾‍🍳.
 
 Plus sérieusement je n'imaginais pas à quel point ce framework pouvait nous ménager dans la réalisation d'un projet. Je suis assez satisfait dans ce que j'ai fourni je le pensais compliqué au départ, mais en le commençant petit à petit je me suis rendu compte que c'était largement faisable. J'imagine plusieurs fonctionnalités à l'avenir comme par exemple pouvoir uploadé plusieurs fichiers d'un coup, pouvoir créer une arborescence ou encore un système de partage de fichier...
 
-En tout cas ce projet m'a permis de découvrir le Framework ![image](https://img.shields.io/badge/Symfony-000000?style=for-the-badge&logo=Symfony&logoColor=white) et de m'ouvrir à de nouvelles perspectives dans le développement Web.
+En tout cas ce projet m'a permis de découvrir le Framework Symfony et de m'ouvrir à de nouvelles perspectives dans le développement Web.

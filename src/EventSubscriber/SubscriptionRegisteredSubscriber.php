@@ -75,7 +75,7 @@ class SubscriptionRegisteredSubscriber implements EventSubscriberInterface
         return [
             SubscriptionRegisteredEvent::NAME => [
                 ['sendConfirmationEmail', 10],
-                // ['sendDiscordNotification', 5]
+                ['sendDiscordNotification', 5]
             ],
         ];
     }
