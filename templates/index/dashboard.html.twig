@@ -100,6 +100,27 @@
 									</div>
 								{% endfor %}
 							{% endif %}
+
+							{% if others is not empty %}
+								<h2 class="my-4">
+									<i class="{{ otherCategory.icon }}"></i>
+									{{ otherCategory.name }}
+								</h2>
+
+								{% for other in others %}
+									<div class="card col-lg-6 mx-3 mb-3" style="width: 19rem;">
+										<div class="card-body">
+											<h5 class="card-title">{{ other.originalFilename }}</h5>
+											<a href="uploads/{{ other.filename }}" class="card-link" download="{{ other.originalFilename }}">
+												<i class="fa-solid fa-circle-arrow-down"></i>
+											</a>
+											<a href="{{ path('delete', { id : other.id }) }}" class="">
+												<i class="fa-solid fa-xmark"></i>
+											</a>
+										</div>
+									</div>
+								{% endfor %}
+							{% endif %}
 						</div>
 					</div>
 				</div>

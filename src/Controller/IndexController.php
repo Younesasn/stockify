@@ -32,17 +32,20 @@ class IndexController extends AbstractController
         $user = $this->getUser();
 
         // Récupérations des Category & des Upload par Category du User
-        $pictureCategory = $categoryRepository->findOneBy(['name' => 'Photos']);
+        $pictureCategory = $categoryRepository->findOneByName('Photos');
         $pictures = $uploadRepository->findByUserWithCategory($user, 'Photos');
 
-        $fileCategory = $categoryRepository->findOneBy(['name' => 'Fichiers']);
+        $fileCategory = $categoryRepository->findOneByName('Fichiers');
         $files = $uploadRepository->findByUserWithCategory($user, 'Fichiers');
 
-        $videoCategory = $categoryRepository->findOneBy(['name' => 'Vidéos']);
+        $videoCategory = $categoryRepository->findOneByName('Vidéos');
         $videos = $uploadRepository->findByUserWithCategory($user, 'Vidéos');
 
-        $audioCategory = $categoryRepository->findOneBy(['name' => 'Audios']);
+        $audioCategory = $categoryRepository->findOneByName('Audios');
         $audios = $uploadRepository->findByUserWithCategory($user, 'Audios');
+
+        $otherCategory = $categoryRepository->findOneByName('Non-catégorisés');
+        $others = $uploadRepository->findByUserWithCategory($user, 'Non-catégorisés');
 
         // Addition de toutes les tailles d'Upload du User + produit en croix
         $size = $uploadRepository->findSizeAllFiles($user);
@@ -87,10 +90,11 @@ class IndexController extends AbstractController
                 
                 // si l'extension n'existe pas en BDD
                 if (empty($searchExtension)) {
-                    // catégorie par défaut : Autres
-                    $extension->setCategory($categoryRepository->findOneBy(['name' => 'Autres']));
+                    // catégorie par défaut
+                    $extension->setCategory($categoryRepository->findOneByName('Non-catégorisés'));
                     $extension->setValue($extensionFile);
                     $em->persist($extension);
+                    $searchExtension = $extension;
                 }
 
                 $file->setCategory($searchExtension->getCategory());
@@ -112,6 +116,8 @@ class IndexController extends AbstractController
             'videoCategory' => $videoCategory,
             'audios' => $audios,
             'audioCategory' => $audioCategory,
+            'others' => $others,
+            'otherCategory' => $otherCategory,
             'size' => $size,
             'storage' => $userStorage,
             'pourcent' => $pourcent,

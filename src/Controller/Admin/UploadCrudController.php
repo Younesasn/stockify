@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class UploadCrudController extends AbstractCrudController
@@ -26,9 +25,10 @@ class UploadCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             ImageField::new('filename')->setBasePath('uploads/' . $this->getUser()->getDirectoryName())->setUploadDir('uploads/' . $this->getUser()->getDirectoryName()),
-            NumberField::new('size')->hideOnForm(),
-            TextField::new('extension'),
             TextField::new('originalFilename'),
+            TextField::new('extension'),
+            AssociationField::new('category'),
+            NumberField::new('size')->hideOnForm(),
             DateField::new('date')->hideOnForm(),
             AssociationField::new('user')
         ];

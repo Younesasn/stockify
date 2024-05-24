@@ -16,9 +16,6 @@ Lancez les commandes :
 ```bash
 php bin/console doctrine:database:create
 ```
-
-&
-
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
