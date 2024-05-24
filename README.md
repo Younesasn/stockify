@@ -48,6 +48,8 @@ Ensuite il suffit juste d'indiquer l'Endpoint `/api/dashboard` en méthode `GET`
 
 J'ai généré un formulaire de réinitialisation de mot de passe pour les utilisateurs.
 
+En envoyant son email dans le formulaire, un mail de 
+
 J'avais une légère problématique pour la modification d'informations dans `Profil`, la modification n'était pas possible tant que le mot de passe n'était pas réindiquer, et ce n'était pas le but. J'ai préféré désactiver cette possibilité pour ne pas créer de problème de mot de passe.
 
 ## Conclusion 🔚
