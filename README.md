@@ -30,7 +30,7 @@ Pour contrer ce problème, j'ai mis en place un Subscriber [`DeleteUploadSubscri
 
 J'ai créé un [`SubscriptionRegisteredEvent`](<src/Event/SubscriptionRegisteredEvent.php>) au moment de l'inscription d'un `User`. J'ai ensuite souscris à cet `Event` pour envoyer un mail de remerciement à l'utilisateur (que j'ai d'ailleurs transformer en [`Service`](<src/Mail/SubscriptionService.php>)) et envoyer une notification [`Discord`](<src/EventSubscriber/SubscriptionRegisteredSubscriber.php>)
 
-J'ai aussi créé un [`DeleteUserSubscriber`](<src/EventSubscriber/DeleteUserSubscriber.php>) pour supprimer tout les `Upload` du `User` correspondant dans la base de donnée puis supprimer son dossier dans `/uplaods/`.
+J'ai aussi créé un [`DeleteUserSubscriber`](<src/EventSubscriber/DeleteUserSubscriber.php>) pour supprimer tout les `Upload` du `User` correspondant dans la base de donnée puis supprimer son dossier dans `/uploads/`.
 
 Le chiffrage de mot de passe aussi est un [`Subscriber`](<src/EventSubscriber/HashUserPasswordSubscriber.php>) que je met en place juste avant le `persist` du `Manager`.
 
@@ -45,3 +45,15 @@ Pour cela je fais générer pour chaque `User` un `Token` lors de son inscriptio
 Ensuite il suffit juste d'indiquer l'Endpoint `/api/dashboard` en méthode `GET` puis d'insérer dans les `Headers` son `X-API-TOKEN`.
 
 ## Reset Password 🔄
+
+J'ai généré un formulaire de réinitialisation de mot de passe pour les utilisateurs.
+
+J'avais une légère problématique pour la modification d'informations dans `Profil`, la modification n'était pas possible tant que le mot de passe n'était pas réindiquer, et ce n'était pas le but. J'ai préféré désactiver cette possibilité pour ne pas créer de problème de mot de passe.
+
+## Conclusion 🔚
+
+Après la réalisation d'un [projet `PHP`](<https://github.com/Younesasn/power>) sans framework, aborder Symfony est un pur régale 👨🏾‍🍳.
+
+Plus sérieusement je n'imaginais pas à quel point ce framework pouvait nous ménager dans la réalisation d'un projet. Je suis assez satisfait dans ce que j'ai fourni je le pensais compliqué au départ, mais en le commençant petit à petit je me suis rendu compte que c'était largement faisable. J'imagine plusieurs fonctionnalités à l'avenir comme par exemple pouvoir uploadé plusieurs fichiers d'un coup, pouvoir créer une arborescence ou encore un système de partage de fichier...
+
+En tout cas ce projet m'a permis de découvrir le Framework ![image](https://img.shields.io/badge/Symfony-000000?style=for-the-badge&logo=Symfony&logoColor=white) et de m'ouvrir à de nouvelles perspectives dans le développement Web.
