@@ -16,7 +16,7 @@ J'ai simplement générer un formulaire d'upload de fichier, avec l'affichage de
 
 ## EasyAdmin 👨🏾‍💼
 
-J'ai intégré Easyadmin dans mon projet pour avoir un meilleur visuel sur l'ensemble de ma base de donnée.
+J'ai intégré Easyadmin dans mon projet pour avoir un contrôle directe sur l'ensemble de ma base de donnée depuis mon projet.
 
 ### Suppression des fichiers 🗑️
 
@@ -40,7 +40,7 @@ Je n'es créé qu'un seul [`EventListener`](<src/EventListener/AddMyCorpHeaderLi
 
 J'ai aussi exposé mon projet sous forme d'API si un utilisateur veut accéder à ses informations depuis son application ou autre.
 
-Pour cela je fais générer pour chaque `User` un `Token` lors de son inscription. Il y a accès depuis son espace `Profil` dans la barre de navigation.
+Pour cela, je fais générer pour chaque `User` un `Token` lors de son inscription. Il y a accès depuis son espace `Profil` dans la barre de navigation.
 
 Ensuite il suffit juste d'indiquer l'Endpoint `/api/dashboard` en méthode `GET` puis d'insérer dans les `Headers` son `X-API-TOKEN`.
 
@@ -48,7 +48,7 @@ Ensuite il suffit juste d'indiquer l'Endpoint `/api/dashboard` en méthode `GET`
 
 J'ai généré un formulaire de réinitialisation de mot de passe pour les utilisateurs.
 
-En envoyant son email dans le formulaire, un mail de 
+En envoyant son email dans le formulaire, un lien unique est envoyé par mail pour avoir accès au formulaire de réinitialisation du `User` concerné.
 
 J'avais une légère problématique pour la modification d'informations dans `Profil`, la modification n'était pas possible tant que le mot de passe n'était pas réindiquer, et ce n'était pas le but. J'ai préféré désactiver cette possibilité pour ne pas créer de problème de mot de passe.
 
