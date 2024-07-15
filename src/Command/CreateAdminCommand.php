@@ -5,7 +5,6 @@ namespace App\Command;
 use App\Entity\User;
 use App\Repository\SubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Faker\Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -39,20 +38,19 @@ class CreateAdminCommand extends Command
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
 
-        $faker = Factory::create('fr_FR');
         $filesystem = new Filesystem();
         
         $sub = $this->subscriptionRepository->findOneByName('Premium');
         
         $user = new User();
         $user
-            ->setFirstName($faker->firstName)
-            ->setLastName($faker->lastName)
+            ->setFirstName('Admin')
+            ->setLastName('Admin')
             ->setEmail($email)
             ->setPassword($password)
             ->setSubscription($sub)
             ->setRoles(['ROLE_ADMIN']);
-            $user->setToken($faker->sha256());
+            $user->setToken(bin2hex(random_bytes(32)));
             $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
             $filesystem->mkdir('public/uploads/' . $user->getDirectoryName());
 
