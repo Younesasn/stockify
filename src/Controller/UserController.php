@@ -32,11 +32,6 @@ class UserController extends AbstractController
             $entityManager->flush();
             $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());
 
-            $dispatcher->dispatch(
-                new SubscriptionRegisteredEvent($user),
-                SubscriptionRegisteredEvent::NAME
-            );
-
             $this->addFlash('success', 'Vous êtes bien inscrit !');
             return $this->redirectToRoute('dashboard', [], Response::HTTP_SEE_OTHER);
         }
