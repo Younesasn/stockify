@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\User;
 use App\Repository\SubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,7 +39,7 @@ class CreateAdminCommand extends Command
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
 
-        $faker = \Faker\Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         $filesystem = new Filesystem();
         
         $sub = $this->subscriptionRepository->findOneByName('Premium');
