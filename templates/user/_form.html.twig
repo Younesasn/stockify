@@ -1,24 +1,18 @@
-{# {{ form_start(form) }}
-    {{ form_widget(form) }}
-{{ form_end(form) }} #}
-
-{# {{ form_start(form) }} #}
-	<div class="col-6">
-		{{ form_row(form.firstName, { 'name': 'Prénom' }) }}
-	</div>
-	<div class="col-6">
-		{{ form_row(form.lastName, { 'name': 'Nom' }) }}
-	</div>
-	<div class="col-12">
-		{{ form_row(form.email) }}
-	</div>
-	<div class="col-12">
-		{{ form_row(form.password, { 'name': 'Mot de passe' }) }}
-	</div>
-	<div class="col-12">
-		{{ form_row(form.subscription, { 'name': 'Abonnement' }) }}
-	</div>
-	<div class="col-6">
-		<button class="btn btn-primary">{{ button_label|default("S'inscrire") }}</button>
-	</div>
-{# {{ form_end(form) }} #}
+<div class="col-6">
+	{{ form_row(form.firstName, { 'name': 'Prénom' }) }}
+</div>
+<div class="col-6">
+	{{ form_row(form.lastName, { 'name': 'Nom' }) }}
+</div>
+<div class="col-12">
+	{{ form_row(form.email) }}
+</div>
+<div class="col-12">
+	{{ form_row(form.password, { 'name': 'Mot de passe' }) }}
+</div>
+<div class="col-12">
+	{{ form_row(form.subscription, { 'name': 'Abonnement' }) }}
+</div>
+<div class="col-6">
+	<button class="btn btn-primary">{{ button_label|default("S'inscrire") }}</button>
+</div>
