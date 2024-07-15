@@ -20,8 +20,6 @@ class UserController extends AbstractController
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Filesystem $filesystem, EventDispatcherInterface $dispatcher): Response
     {
-        $faker = \Faker\Factory::create('fr_FR');
-
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -29,7 +27,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRoles([]);
             $user->setDirectoryName($user->getFirstName() . '_' . $user->getLastName() . '_' . uniqid());
-            $user->setToken($faker->sha256());
+            $user->setToken(bin2hex(random_bytes(32)));
             $entityManager->persist($user);
             $entityManager->flush();
             $filesystem->mkdir($this->getParameter('uploads_directory') . '/' . $user->getDirectoryName());
